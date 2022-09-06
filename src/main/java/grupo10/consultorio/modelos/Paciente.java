@@ -84,11 +84,7 @@ public class Paciente implements Serializable {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
-
-    public String getFecha_nacimiento() {
-        return fechaNacimiento;
-    }
-
+    
     public String getEps() {
         return eps;
     }
