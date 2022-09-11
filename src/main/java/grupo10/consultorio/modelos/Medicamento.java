@@ -53,4 +53,4 @@ public class Medicamento implements Serializable {
         this.indicaciones = indicaciones;
     }
 
-}
+    }

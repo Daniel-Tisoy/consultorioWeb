@@ -5,12 +5,16 @@
 package grupo10.consultorio.modelos;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -20,6 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "diagnostico")
+//@JsonIgnoreProperties(value = {"paciente"},allowGetters = true)
 public class Diagnostico implements Serializable {
 
     @Id
@@ -33,19 +38,20 @@ public class Diagnostico implements Serializable {
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "id_medico")
     private Usuario medico;
     @Column(name = "descripcion")
     private String titulo;
     @Column(name = "observacion")
     private String observacion;
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name = "formula",
+        joinColumns = @JoinColumn(name = "id_diagnostico"),
+        inverseJoinColumns = @JoinColumn(name = "id_medicamento"))
+    private List<Medicamento> medicamentos;
 
     public int getIdDiagnostico() {
         return idDiagnostico;
-    }
-
-    public void setIdDiagnostico(int idDiagnostico) {
-        this.idDiagnostico = idDiagnostico;
     }
 
     public Cita getCita() {
@@ -59,7 +65,7 @@ public class Diagnostico implements Serializable {
     public Paciente getPaciente() {
         return paciente;
     }
-
+    
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
@@ -87,4 +93,13 @@ public class Diagnostico implements Serializable {
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
+
+    public List<Medicamento> getMedicamentos() {
+        return medicamentos;
+    }
+
+    public void setMedicamentos(List<Medicamento> medicamentos) {
+        this.medicamentos = medicamentos;
+    }
+
 }

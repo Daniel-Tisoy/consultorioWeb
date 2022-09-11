@@ -7,6 +7,7 @@ package grupo10.consultorio.controladores;
 import grupo10.consultorio.modelos.Diagnostico;
 import grupo10.consultorio.servicio.ServicioDiagnostico;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,11 +55,12 @@ public class ControladorDiagnostico {
         Diagnostico obj = servicioDiagnostico.findById(diagnostico.getIdDiagnostico());
 
         if (obj != null) {
-            obj.setCita(diagnostico.getCita());
+            //obj.setCita(diagnostico.getCita());
             obj.setMedico(diagnostico.getMedico());
             obj.setObservacion(diagnostico.getObservacion());
             obj.setPaciente(diagnostico.getPaciente());
             obj.setTitulo(diagnostico.getTitulo());
+            obj.setMedicamentos(diagnostico.getMedicamentos());
             servicioDiagnostico.save(obj);
             return new ResponseEntity<>(obj, HttpStatus.OK);
         } else {
@@ -71,7 +73,7 @@ public class ControladorDiagnostico {
         return servicioDiagnostico.findAll();
     }
 
-    @GetMapping("/list/{id}/")
+    @GetMapping("/list/{id}")
     public ResponseEntity<Diagnostico> consultarPorId(@PathVariable Integer id) {
         Diagnostico obj = servicioDiagnostico.findById(id);
         if (obj != null) {
@@ -79,5 +81,19 @@ public class ControladorDiagnostico {
         } else {
             return new ResponseEntity<>(obj, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
+
+    @GetMapping("/list/paciente/{documento}")
+    public List<Diagnostico> consultarPorPaciente(@PathVariable Integer documento) {
+        return getPaciente(servicioDiagnostico.findAll(), documento);
+
+    }
+
+    private List<Diagnostico> getPaciente(List<Diagnostico> list, Integer id) {
+        return list.stream().filter(x -> {
+            return id == x.getPaciente().getDocumento();
+        }).collect(Collectors.toList());
+    }
+
 }
