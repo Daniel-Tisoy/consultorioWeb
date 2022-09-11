@@ -7,6 +7,7 @@ package grupo10.consultorio.controladores;
 import grupo10.consultorio.modelos.Cita;
 import grupo10.consultorio.servicio.ServicioCita;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +57,7 @@ public class ControladorCita {
         if (obj != null) {
             obj.setEstado(cita.getEstado());
             obj.setFecha(cita.getFecha());
-            obj.setIdpaciente(cita.getIdpaciente());
+            //obj.setPaciente(cita.getPaciente());
             obj.setLugar(cita.getLugar());
             servicioCita.save(obj);
             return new ResponseEntity<>(obj, HttpStatus.OK);
@@ -70,7 +71,7 @@ public class ControladorCita {
         return servicioCita.findAll();
     }
 
-    @GetMapping("/list/{id}/")
+    @GetMapping("/list/{id}")
     public ResponseEntity<Cita> consultarPorId(@PathVariable Integer id) {
         Cita obj = servicioCita.findById(id);
         if (obj != null) {
@@ -78,6 +79,17 @@ public class ControladorCita {
         } else {
             return new ResponseEntity<>(obj, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @GetMapping("/list/paciente/{documento}")
+    public List<Cita> consultarPorPaciente(@PathVariable Integer documento) {
+        return getPaciente(servicioCita.findAll(), documento);
+
+    }
+
+    private List<Cita> getPaciente(List<Cita> list, Integer id) {
+        return list.stream().filter(x -> {
+            return id == x.getPaciente().getDocumento();
+        }).collect(Collectors.toList());
     }
 
 }
