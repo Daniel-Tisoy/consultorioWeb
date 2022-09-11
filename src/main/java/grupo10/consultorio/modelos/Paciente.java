@@ -7,8 +7,6 @@ package grupo10.consultorio.modelos;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -21,7 +19,7 @@ import javax.persistence.Table;
 public class Paciente implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "documento")
     private int documento;
     @Column(name = "nombre")
@@ -32,10 +30,13 @@ public class Paciente implements Serializable {
     private String historia;
     @Column(name = "sexo")
     private String sexo;
-    @Column(name = "fechaNacimiento")
+    @Column(name = "fecha_nacimiento")
     private String fechaNacimiento;
     @Column(name = "eps")
     private String eps;
+    // traer los diagnosticos relacionados
+   /* @OneToMany(mappedBy = "paciente")
+    private List<Diagnostico> diagnosticos;*/
 
     public String getFechaNacimiento() {
         return fechaNacimiento;
@@ -84,7 +85,7 @@ public class Paciente implements Serializable {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
-    
+
     public String getEps() {
         return eps;
     }
@@ -92,4 +93,5 @@ public class Paciente implements Serializable {
     public void setEps(String eps) {
         this.eps = eps;
     }
+
 }
