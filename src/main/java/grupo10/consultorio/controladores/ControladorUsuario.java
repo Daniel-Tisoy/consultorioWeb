@@ -71,7 +71,7 @@ public class ControladorUsuario {
         return servicioUsuario.findAll();
     }
 
-    @GetMapping("/list/{id}/")
+    @GetMapping("/list/{id}")
     public ResponseEntity<Usuario> consultarPorId(@PathVariable Integer id) {
         Usuario obj = servicioUsuario.findById(id);
         if (obj != null) {

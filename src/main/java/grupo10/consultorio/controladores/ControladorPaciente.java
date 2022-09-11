@@ -66,12 +66,12 @@ public class ControladorPaciente {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public List<Paciente> consultarTodo() {
         return servicioPaciente.findAll();
     }
     
-    @GetMapping("/{id]")
+    @GetMapping("/list/{id}")
     public ResponseEntity<Paciente> consultarPorId(@PathVariable Integer id){
         Paciente obj = servicioPaciente.findById(id);
         if (obj != null){
